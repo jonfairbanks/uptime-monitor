@@ -1,34 +1,33 @@
 var express = require('express')
 var router = express.Router()
+let PageController = require('../../controllers/page')
 var passport = require('passport')
-let UserController = require('../../controllers/user')
 
-// Handle Users
-router.post('/', UserController.create) // Create users (Register)
+// Handle Pages
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  PageController.create
+) // Create pages
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  UserController.getAll
-) // Read or get users
+  PageController.getAll
+) // Read or get pages
 router.get(
-  '/current',
+  '/:pageId',
   passport.authenticate('jwt', { session: false }),
-  UserController.getCurrentUser
-)
-router.get(
-  '/:userId',
-  passport.authenticate('jwt', { session: false }),
-  UserController.getOne
+  PageController.getOne
 )
 router.post(
-  '/:userId',
+  '/:pageId',
   passport.authenticate('jwt', { session: false }),
-  UserController.update
-) // Update users
+  PageController.update
+) // Update pages
 router.delete(
-  '/:userId',
+  '/:pageId',
   passport.authenticate('jwt', { session: false }),
-  UserController.delete
-) // Delete users
+  PageController.delete
+) // Delete pages
 
 module.exports = router
